@@ -428,11 +428,15 @@ sync`.
 
 ### VFS Disk Options
 
-This flag allows you to manually set the statistics about the filing system.
-It can be useful when those statistics cannot be read correctly automatically.
+These flags allow you to manually set the statistics of the file system.
+They can be useful when those statistics cannot be read correctly automatically.
+
+Note that you can control the reported used disk space by specifying both
+flags. It will then be derived as `total - free`.
 
 ```text
     --vfs-disk-space-total-size    Manually set the total disk space size (example: 256G, default: -1)
+    --vfs-disk-space-free-size     Manually set the free disk space size (example: 128G, default: -1)
 ```
 
 ### Alternate report of used bytes

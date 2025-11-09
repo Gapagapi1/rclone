@@ -217,6 +217,31 @@ func TestVFSStat(t *testing.T) {
 	assert.Equal(t, os.ErrNotExist, err)
 }
 
+func TestVFSStatfsWithDiskSpaceFreeSize(t *testing.T) {
+	opt := vfscommon.Opt
+	opt.DiskSpaceFreeSize = fs.SizeSuffix(5)
+
+	_, vfs := newTestVFSOpt(t, &opt)
+
+	_, _, free := vfs.Statfs()
+
+	assert.Equal(t, int64(5), free, "free should be overridden by vfs_disk_space_free_size")
+}
+
+func TestVFSStatfsWithDiskSpaceTotalAndFreeSize(t *testing.T) {
+	opt := vfscommon.Opt
+	opt.DiskSpaceTotalSize = fs.SizeSuffix(20)
+	opt.DiskSpaceFreeSize = fs.SizeSuffix(5)
+
+	_, vfs := newTestVFSOpt(t, &opt)
+
+	total, used, free := vfs.Statfs()
+
+	assert.Equal(t, int64(20), total, "total should come from vfs_disk_space_total_size")
+	assert.Equal(t, int64(5), free, "free should come from vfs_disk_space_free_size")
+	assert.Equal(t, int64(15), used, "used should be derived as total - free when both disk space options are set")
+}
+
 func TestVFSStatParent(t *testing.T) {
 	r, vfs := newTestVFS(t)
 

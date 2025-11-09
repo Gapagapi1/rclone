@@ -696,6 +696,15 @@ func (vfs *VFS) Statfs() (total, used, free int64) {
 		total = int64(vfs.Opt.DiskSpaceTotalSize)
 	}
 
+	if int64(vfs.Opt.DiskSpaceFreeSize) >= 0 {
+		free = int64(vfs.Opt.DiskSpaceFreeSize)
+	}
+
+	// If both disk space flags are set, let fillInMissingSizes infer used.
+	if int64(vfs.Opt.DiskSpaceTotalSize) >= 0 && int64(vfs.Opt.DiskSpaceFreeSize) >= 0 {
+		used = -1
+	}
+
 	total, used, free = fillInMissingSizes(total, used, free, unknownFreeBytes)
 	return
 }

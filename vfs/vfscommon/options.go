@@ -151,6 +151,11 @@ var OptionsInfo = fs.Options{{
 	Help:    "Specify the total space of disk",
 	Groups:  "VFS",
 }, {
+	Name:    "vfs_disk_space_free_size",
+	Default: fs.SizeSuffix(-1),
+	Help:    "Specify the free space of disk",
+	Groups:  "VFS",
+}, {
 	Name:    "umask",
 	Default: FileMode(getUmask()),
 	Help:    "Override the permission bits set by the filesystem (not supported on Windows)",
@@ -209,6 +214,7 @@ type Options struct {
 	UsedIsSize         bool          `config:"vfs_used_is_size"`     // if true, use the `rclone size` algorithm for Used size
 	FastFingerprint    bool          `config:"vfs_fast_fingerprint"` // if set use fast fingerprints
 	DiskSpaceTotalSize fs.SizeSuffix `config:"vfs_disk_space_total_size"`
+	DiskSpaceFreeSize  fs.SizeSuffix `config:"vfs_disk_space_free_size"`
 	MetadataExtension  string        `config:"vfs_metadata_extension"` // if set respond to files with this extension with metadata
 }
 
